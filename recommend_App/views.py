@@ -14,18 +14,18 @@ def predictor(request):
     return Response({'message': 'Hello, Everyone!'})
 
 
-@api_view(['GET'])
-def formInfo(request):
-    policy=request.GET['policy']
-    # print(policy)
-    recommended_schemes=recommend(policy)
-    list_of_schemes=""
-    for x in recommended_schemes:
-        list_of_schemes+=x+"+"
-    list_of_schemes = list_of_schemes[:-1]
-    print(list_of_schemes)
-    return Response(json.dumps(list_of_schemes),content_type="application/json")
-    # return render(request,'index.html',{"policy":"response aa gya"})
+# @api_view(['GET'])
+# def formInfo(request):
+#     policy=request.GET['policy']
+#     # print(policy)
+#     recommended_schemes=recommend(policy)
+#     list_of_schemes=""
+#     for x in recommended_schemes:
+#         list_of_schemes+=x+"+"
+#     list_of_schemes = list_of_schemes[:-1]
+#     print(list_of_schemes)
+#     return Response(json.dumps(list_of_schemes),content_type="application/json")
+#     # return render(request,'index.html',{"policy":"response aa gya"})
 
 @api_view(['GET'])
 def userInfo(request):
@@ -52,11 +52,11 @@ def userInfo(request):
     
     return Response(json.dumps(list_of_schemes))
     return render(request,'recommend.html',{"schemes":recommendation_on_inputs(user_tags,day,city,cuisine)})
-@api_view(['GET'])
-def policyInfo(request):
-    policy=request.GET['policy']
-    get_description(policy)
-    return Response({"message":"policy mil gya"})
+# @api_view(['GET'])
+# def policyInfo(request):
+#     policy=request.GET['policy']
+#     get_description(policy)
+#     return Response({"message":"policy mil gya"})
     
 
 def decompress_pickle(file):
@@ -64,10 +64,10 @@ def decompress_pickle(file):
         data = cPickle.load(f)
     return data
 
-df_new = decompress_pickle('Notebooks/df_new.pbz2')
-similarity = decompress_pickle('Notebooks/similarity.pbz2')
+# df_new = decompress_pickle('Notebooks/df_new.pbz2')
+# similarity = decompress_pickle('Notebooks/similarity.pbz2')
 food_data=decompress_pickle('Notebooks/food_data.pbz2')
-food_dataframe = pd.DataFrame(df_new)
+# food_dataframe = pd.DataFrame(df_new)
 # tfidf_matrix=decompress_pickle('Notebooks/tfidf_matrix.pbz2')
 vectorizer=TfidfVectorizer()
 tfidf_matrix=vectorizer.fit_transform(food_data['tags'])
@@ -99,25 +99,25 @@ def recommendation_on_inputs(user_tags,day,city,cuisine):
                 break
     return [recommendations_business_id,recommendations_business_city,recommendations_restaurants]
     
-def get_description(policy):    
-    pol_data=policy_data.loc[policy_data["scheme_name"]==policy].head(1)
+# def get_description(policy):    
+#     pol_data=policy_data.loc[policy_data["scheme_name"]==policy].head(1)
     
-    if pol_data.empty:
-        print("khali")
-    else:
-        print(pol_data)
+#     if pol_data.empty:
+#         print("khali")
+#     else:
+#         print(pol_data)
     
     
 
-def recommend(policy):
-    #scheme index is the location of that scheme in the similarity_df
-    scheme_index=similarity.index.get_loc(policy)
+# def recommend(policy):
+#     #scheme index is the location of that scheme in the similarity_df
+#     scheme_index=similarity.index.get_loc(policy)
 
 
-    #top_5 is storing the top 10 schemes having a similar applicant as the entered scheme
-    top_5=similarity.iloc[scheme_index].sort_values(ascending=False)[1:6]
+#     #top_5 is storing the top 10 schemes having a similar applicant as the entered scheme
+#     top_5=similarity.iloc[scheme_index].sort_values(ascending=False)[1:6]
 
-    return top_5.to_dict()
+#     return top_5.to_dict()
 
 
 
